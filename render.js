@@ -1,6 +1,6 @@
 const canvas=document.getElementById('visualiser');
 canvas.width=window.innerWidth-40;
-canvas.height=window.innerHeight;
+canvas.height=window.innerHeight-100;
 
 const ctx=canvas.getContext('2d');
 
@@ -50,11 +50,14 @@ class Visualiser {
     while(gridValue<=this.maxValue){
       const gridY=canvasActualHeight*(1-gridValue/this.maxValue)+this.options.padding;
       drawLine(this.ctx,0,gridY,this.canvas.width,gridY,this.options.gridColor);
-      drawLine(this.ctx,20,this.options.padding/2,20,gridY+this.options.padding/2,this.options.gridColor);
       drawText(this.ctx,gridValue,0,gridY-2,this.options.gridColor,'bottom','bold',10,'Arial');
 
       gridValue+=this.options.gridScale;
     }
+  }
+
+  drawYAxis(){
+    drawLine(this.ctx,20,this.options.padding/2,20,this.canvas.height,this.options.gridColor);
   }
 
   drawBars(){
@@ -84,6 +87,7 @@ class Visualiser {
   draw(){
     this.drawBars();
     this.drawGridLines();
+    this.drawYAxis();
   }
 }
 
