@@ -14,12 +14,12 @@ function drawLine(ctx,startX,startY,endX,endY,color) {
   ctx.restore();
 }
 
-function drawBar(ctx,upperLeftCornerX,upperLeftCornerY,width,height,color) {
-  ctx.save();
-  ctx.fillStyle=color;
-  ctx.fillRect(upperLeftCornerX,upperLeftCornerY,width,height);
-  ctx.restore();
-}
+// function drawBar(ctx,upperLeftCornerX,upperLeftCornerY,width,height,color) {
+//   ctx.save();
+//   ctx.fillStyle=color;
+//   ctx.fillRect(upperLeftCornerX,upperLeftCornerY,width,height);
+//   ctx.restore();
+// }
 
 function drawText(ctx,text,xPos,yPos,color,baseline,weight,size,family){
   ctx.save();
@@ -39,6 +39,23 @@ class Visualiser {
     this.maxValue=Math.max(...this.workout.steps.map(step => step.watts));
   }
 
+  drawLine(startX,startY,endX,endY,color) {
+    this.ctx.save();
+    this.ctx.strokeStyle=color;
+    this.ctx.beginPath();
+    this.ctx.moveTo(startX,startY);
+    this.ctx.lineTo(endX,endY);
+    this.ctx.stroke();
+    this.ctx.restore();
+  }
+
+  drawBar(upperLeftCornerX,upperLeftCornerY,width,height,color) {
+    this.ctx.save();
+    this.ctx.fillStyle=color;
+    this.ctx.fillRect(upperLeftCornerX,upperLeftCornerY,width,height);
+    this.ctx.restore();
+  }
+
   workoutLength(){
     return this.workout.steps.reduce((tot, step) => tot + step.duration, 0);
   }
@@ -49,7 +66,7 @@ class Visualiser {
     let gridValue=0;
     while(gridValue<=this.maxValue){
       const gridY=canvasActualHeight*(1-gridValue/this.maxValue)+this.options.padding;
-      drawLine(this.ctx,0,gridY,this.canvas.width,gridY,this.options.gridColor);
+      this.drawLine(0,gridY,this.canvas.width,gridY,this.options.gridColor);
       drawText(this.ctx,gridValue,0,gridY-2,this.options.gridColor,'bottom','bold',10,'Arial');
 
       gridValue+=this.options.gridScale;
@@ -57,7 +74,7 @@ class Visualiser {
   }
 
   drawYAxis(){
-    drawLine(this.ctx,20,this.options.padding/2,20,this.canvas.height,this.options.gridColor);
+    this.drawLine(20,this.options.padding/2,20,this.canvas.height,this.options.gridColor);
   }
 
   drawBars(){
@@ -71,8 +88,7 @@ class Visualiser {
       const barWidth=Math.floor(secWidth*step.duration);
       const startY=this.canvas.height-barHeight-this.options.padding;
       console.log('StartX',startX,'Bar Height:',barHeight,'Bar Width:',barWidth);
-      drawBar(
-        this.ctx,
+      this.drawBar(
         startX,
         startY,
         barWidth,

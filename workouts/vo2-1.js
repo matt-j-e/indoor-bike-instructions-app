@@ -18,7 +18,7 @@ const workout={
     { duration: 120, watts: 75, cadence: '85-95' },
     { duration: 60, watts: 205, cadence: '90-105' },
     // Recovery
-    { duration: 600, watts: 75, cadence: '85-95' },
+    { duration: 300, watts: 75, cadence: '85-95' },
     // Main set 2
     { duration: 60, watts: 205, cadence: '90-105' },
     { duration: 120, watts: 75, cadence: '85-95' },
@@ -29,7 +29,7 @@ const workout={
     { duration: 60, watts: 205, cadence: '90-105' },
     { duration: 120, watts: 75, cadence: '85-95' },
     // Cool down
-    { duration: 300, watts: 60, cadence: '85-95' },
-    { duration: 300, watts: 50, cadence: '85-95' },
+    { duration: 150, watts: 60, cadence: '85-95' },
+    { duration: 150, watts: 50, cadence: '85-95' },
   ]
 }
