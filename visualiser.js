@@ -171,5 +171,5 @@ const visualiser=new Visualiser({
   axisColor:'gray',
   padding:30
 },workout);
-visualiser.start();
+visualiser.draw(0);
 // visualiser.draw(0);

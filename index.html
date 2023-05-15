@@ -8,8 +8,16 @@
 </head>
 <body>
   <canvas id="visualiser"></canvas>
+  <button id="startButton">Start</button>
+  <button id="stopButton">Stop</button>
   <script src="workouts/vo2-1.js"></script>
   <script type="text/javascript" src="visualiser.js"></script>
+  <script>
+    document.getElementById('startButton').addEventListener('click', ()=>{
+      visualiser.start();
+    });
+
+  </script>
   <!-- <script type="text/javascript" src="render.js"></script> -->
 </body>
 </html>
