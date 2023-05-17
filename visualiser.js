@@ -150,6 +150,7 @@ class Visualiser{
   }
 
   start(){
+    const startTime=Date.now();
     this.stop();
     let x=0;
     let secs=0;
@@ -158,7 +159,10 @@ class Visualiser{
       this.draw(x, secs+1);
       x+=(speed);
       secs++;
-    }, 995);
+      if(secs%60===0) {
+        secs = Math.round((Date.now() - startTime) / 1000);
+      }
+    }, 1000);
   }
   
   stop(){
