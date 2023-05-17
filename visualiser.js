@@ -72,8 +72,6 @@ class Visualiser{
   }
 
   drawGridLines(){
-    // const canvasActualHeight=this.canvas.height-this.options.padding*2;
-
     let gridValue=0;
     while(gridValue<=this.maxValue){
       const gridY=this.actualHeight*(1-gridValue/this.maxValue)+this.options.padding;
@@ -85,7 +83,6 @@ class Visualiser{
   }
 
   drawXMarkers(){
-    // const maxX=this.options.duration;
     const maxX=this.workoutLength();
     const markerStartY=this.actualHeight+this.options.padding-10;
     const markerEndY=markerStartY+10;
@@ -98,7 +95,6 @@ class Visualiser{
   }
 
   drawXScale(){
-    // const maxX=this.options.duration;
     const maxX=this.workoutLength();
     const scaleYPos=this.actualHeight+this.options.padding+20;
     let xValue=0;
@@ -115,7 +111,6 @@ class Visualiser{
     let startX=this.options.padding;
     for(let step of this.workout.steps){
       const barHeight=Math.round((this.actualHeight*step.watts)/this.maxValue);
-      // const barWidth=Math.floor(secWidth*step.duration);
       const barWidth=(step.duration/this.workoutLength())*this.actualWidth;
       const startY=this.canvas.height-barHeight-this.options.padding;
       this.drawBar(
@@ -130,7 +125,20 @@ class Visualiser{
     }
   }
 
-  draw(x){
+  readableTime(totalSecs){
+    let mins=Math.floor(totalSecs/60);
+    let secs=totalSecs%60;
+    let hours=Math.floor(totalSecs/3600);
+    mins=mins<10 ? '0'+mins : mins;
+    secs=secs<10 ? '0'+secs : secs;
+    return `${hours}:${mins}:${secs}`;
+  }
+
+  drawElapsed(secs){
+    this.drawText(this.readableTime(secs),canvas.width-90,50,this.options.axisColor,20,'bottom','bold');
+  }
+
+  draw(x, secs=0){
     this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
     this.drawXAxis();
     this.drawGridLines();
@@ -138,6 +146,7 @@ class Visualiser{
     this.drawBars();
     this.drawXMarkers();
     this.drawYAxis(x);
+    this.drawElapsed(secs);
   }
 
   start(){
@@ -146,11 +155,10 @@ class Visualiser{
     let secs=0;
     const speed=this.actualWidth/this.workoutLength();
     this.timerId=setInterval(() => {
-      this.draw(x);
+      this.draw(x, secs+1);
       x+=(speed);
       secs++;
-      console.log(secs);
-    }, 1000);
+    }, 995);
   }
   
   stop(){
@@ -172,4 +180,3 @@ const visualiser=new Visualiser({
   padding:30
 },workout);
 visualiser.draw(0);
-// visualiser.draw(0);
