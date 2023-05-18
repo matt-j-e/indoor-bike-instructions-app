@@ -154,11 +154,10 @@ class Visualiser{
     this.stop();
     let x=0;
     let secs=0;
-    const speed=this.actualWidth/this.workoutLength();
     this.timerId=setInterval(() => {
-      this.draw(x, secs+1);
-      x+=(speed);
+      x=(secs/this.workoutLength())*this.actualWidth;
       secs++;
+      this.draw(x, secs);
       if(secs%60===0) {
         secs = Math.round((Date.now() - startTime) / 1000);
       }
