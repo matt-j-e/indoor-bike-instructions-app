@@ -4,8 +4,8 @@ class Visualiser{
     this.workout=workout;
     this.canvas=options.canvas;
     this.ctx=this.canvas.getContext('2d');
-    this.actualWidth=this.canvas.width-(this.options.padding*2);
-    this.actualHeight=this.canvas.height-(this.options.padding*2);
+    this.actualWidth=this.canvas.width-(this.options.padding[1]+this.options.padding[3]);
+    this.actualHeight=this.canvas.height-(this.options.padding[0]+this.options.padding[2]);
     this.maxValue=Math.max(...this.workout.steps.map(step => step.watts));
     this.timerId=null;
   }
@@ -63,20 +63,20 @@ class Visualiser{
 
   drawYAxis(x){
     const pad = this.options.padding;
-    this.drawLine(x+pad,pad,x+pad,this.actualHeight+pad,this.options.axisColor);
+    this.drawLine(x+pad[3],pad[0],x+pad[3],this.actualHeight+pad[0],this.options.axisColor);
   }
 
   drawXAxis(){
     const pad = this.options.padding;
-    this.drawLine(pad,this.actualHeight+pad,this.actualWidth+pad,this.actualHeight+pad,this.options.axisColor);
+    this.drawLine(pad[3],this.actualHeight+pad[0],this.actualWidth+pad[3],this.actualHeight+pad[0],this.options.axisColor);
   }
 
   drawGridLines(){
     let gridValue=0;
     while(gridValue<=this.maxValue){
-      const gridY=this.actualHeight*(1-gridValue/this.maxValue)+this.options.padding;
-      this.drawLine(0,gridY,this.canvas.width,gridY,this.options.gridColor);
-      this.drawText(gridValue,0,gridY-2,this.options.gridColor,16,'bottom','bold','Helvetica');
+      const gridY=this.actualHeight*(1-gridValue/this.maxValue)+this.options.padding[0];
+      this.drawLine(0,gridY,this.actualWidth+this.options.padding[3],gridY,this.options.gridColor);
+      this.drawText(gridValue,0,gridY-2,this.options.scaleColor,16,'bottom','bold','Helvetica');
 
       gridValue+=this.options.yScaleRange;
     }
@@ -84,23 +84,23 @@ class Visualiser{
 
   drawXMarkers(){
     const maxX=this.workoutLength();
-    const markerStartY=this.actualHeight+this.options.padding-10;
+    const markerStartY=this.actualHeight+this.options.padding[0]-10;
     const markerEndY=markerStartY+10;
     let xValue=0;
     while(xValue<=maxX){
-      const xPos=(xValue/maxX)*this.actualWidth+this.options.padding;
-      this.drawLine(xPos,markerStartY,xPos,markerEndY,'green'); 
+      const xPos=(xValue/maxX)*this.actualWidth+this.options.padding[3];
+      this.drawLine(xPos,markerStartY,xPos,markerEndY,this.options.axisColor); 
       xValue+=this.options.xScaleRange;
     }
   }
 
   drawXScale(){
     const maxX=this.workoutLength();
-    const scaleYPos=this.actualHeight+this.options.padding+20;
+    const scaleYPos=this.actualHeight+this.options.padding[0]+20;
     let xValue=0;
     while(xValue<=maxX){
-      const scaleXPos=(xValue/maxX)*this.actualWidth+this.options.padding-5;
-      this.drawText(xValue/60,scaleXPos,scaleYPos,'green',16);
+      const scaleXPos=(xValue/maxX)*this.actualWidth+this.options.padding[3]-5;
+      this.drawText(xValue/60,scaleXPos,scaleYPos,this.options.scaleColor,16);
       xValue+=this.options.xScaleRange;
     }
   }
@@ -108,11 +108,11 @@ class Visualiser{
   drawBars(){
     const secWidth=(this.actualWidth)/this.workoutLength();
     
-    let startX=this.options.padding;
+    let startX=this.options.padding[3];
     for(let step of this.workout.steps){
       const barHeight=Math.round((this.actualHeight*step.watts)/this.maxValue);
       const barWidth=(step.duration/this.workoutLength())*this.actualWidth;
-      const startY=this.canvas.height-barHeight-this.options.padding;
+      const startY=this.canvas.height-barHeight-this.options.padding[2];
       this.drawBar(
         startX,
         startY,
@@ -120,7 +120,7 @@ class Visualiser{
         barHeight,
         'skyblue'
       )
-      this.drawText(step.watts,startX,startY,'red',16,'bottom','bold','Helvetica');
+      this.drawText(step.watts,startX,startY,this.options.intensityColor,16,'bottom','bold','Helvetica');
       startX+=barWidth;
     }
   }
@@ -135,7 +135,7 @@ class Visualiser{
   }
 
   drawElapsed(secs){
-    this.drawText(this.readableTime(secs),canvas.width-90,50,this.options.axisColor,20,'bottom','bold');
+    this.drawText(this.readableTime(secs),canvas.width-130,50,this.options.axisColor,25,'bottom','bold');
   }
 
   currentStep(secs){
@@ -163,11 +163,11 @@ class Visualiser{
   }
 
   drawCurrentStepRemaining(value){
-    this.drawText(this.readableTime(value),canvas.width-90,80,this.options.axisColor,20,'bottom','bold');
+    this.drawText(this.readableTime(value),canvas.width-130,100,this.options.remainingColor,25,'bottom','bold');
   }
 
   drawCurrentStepIntensity(value){
-    this.drawText(value,canvas.width-90,110,this.options.axisColor,20,'bottom','bold');
+    this.drawText(value,canvas.width-130,180,this.options.intensityColor,60,'bottom','bold');
   }
 
   draw(x, secs=0){
@@ -208,13 +208,17 @@ class Visualiser{
 }
 
 const canvas=document.getElementById('visualiser');
-canvas.width=1220;
-canvas.height=800;
+canvas.width=window.innerWidth-20;
+canvas.height=window.innerHeight-80;
 const visualiser=new Visualiser({
   canvas,
   xScaleRange:300,
   yScaleRange:20,
-  axisColor:'gray',
-  padding:30
+  axisColor:'rgba(0,0,0,0.9)',
+  gridColor:'rgba(0,0,0,0.4',
+  scaleColor:'white',
+  remainingColor:'white',
+  intensityColor:'orange',
+  padding:[30,150,50,30],
 },workout);
 visualiser.draw(0);
