@@ -138,6 +138,38 @@ class Visualiser{
     this.drawText(this.readableTime(secs),canvas.width-90,50,this.options.axisColor,20,'bottom','bold');
   }
 
+  currentStep(secs){
+    let accumulatedStepDuration=0;
+    let stepIndex=0;
+    const numberOfSteps=this.workout.steps.length;
+    while(secs<this.workoutLength()){
+      const currentStep=this.workout.steps[stepIndex];
+      const currentStepEnd=accumulatedStepDuration+currentStep.duration;
+      if(currentStepEnd>secs) {
+        return {
+          totalDuration:currentStep.duration,
+          remainingDuration:currentStepEnd-secs,
+          intensity:currentStep.watts
+        }
+      }
+      accumulatedStepDuration+=currentStep.duration;
+      stepIndex++;
+    }
+    return {
+      totalDuration:0,
+      remainingDuration:0,
+      intensity:0
+    };
+  }
+
+  drawCurrentStepRemaining(value){
+    this.drawText(this.readableTime(value),canvas.width-90,80,this.options.axisColor,20,'bottom','bold');
+  }
+
+  drawCurrentStepIntensity(value){
+    this.drawText(value,canvas.width-90,110,this.options.axisColor,20,'bottom','bold');
+  }
+
   draw(x, secs=0){
     this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
     this.drawXAxis();
@@ -147,6 +179,9 @@ class Visualiser{
     this.drawXMarkers();
     this.drawYAxis(x);
     this.drawElapsed(secs);
+    const stepData=this.currentStep(secs);
+    this.drawCurrentStepRemaining(stepData.remainingDuration);
+    this.drawCurrentStepIntensity(stepData.intensity);
   }
 
   start(){
@@ -155,8 +190,8 @@ class Visualiser{
     let x=0;
     let secs=0;
     this.timerId=setInterval(() => {
-      x=(secs/this.workoutLength())*this.actualWidth;
       secs++;
+      x=(secs/this.workoutLength())*this.actualWidth;
       this.draw(x, secs);
       if(secs%60===0) {
         secs = Math.round((Date.now() - startTime) / 1000);
