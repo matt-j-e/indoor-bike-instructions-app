@@ -134,8 +134,8 @@ class Visualiser{
     return `${hours}:${mins}:${secs}`;
   }
 
-  drawElapsed(secs){
-    this.drawText(this.readableTime(secs),canvas.width-130,50,this.options.axisColor,25,'bottom','bold');
+  drawElapsed(secs, yPos){
+    this.drawText(this.readableTime(secs),canvas.width-130,yPos,this.options.axisColor,25,'bottom','bold');
   }
 
   currentStep(secs){
@@ -162,12 +162,12 @@ class Visualiser{
     };
   }
 
-  drawCurrentStepRemaining(value){
-    this.drawText(this.readableTime(value),canvas.width-130,100,this.options.remainingColor,25,'bottom','bold');
+  drawCurrentStepRemaining(value, yPos){
+    this.drawText(this.readableTime(value),canvas.width-130,yPos,this.options.remainingColor,25,'bottom','bold');
   }
 
-  drawCurrentStepIntensity(value){
-    this.drawText(value,canvas.width-130,180,this.options.intensityColor,60,'bottom','bold');
+  drawCurrentStepIntensity(value,yPos){
+    this.drawText(value,canvas.width-130,yPos,this.options.intensityColor,60,'bottom','bold');
   }
 
   draw(x, secs=0){
@@ -178,10 +178,10 @@ class Visualiser{
     this.drawBars();
     this.drawXMarkers();
     this.drawYAxis(x);
-    this.drawElapsed(secs);
+    this.drawElapsed(secs,50);
     const stepData=this.currentStep(secs);
-    this.drawCurrentStepRemaining(stepData.remainingDuration);
-    this.drawCurrentStepIntensity(stepData.intensity);
+    this.drawCurrentStepRemaining(stepData.remainingDuration, 180);
+    this.drawCurrentStepIntensity(stepData.intensity,130);
   }
 
   start(){
