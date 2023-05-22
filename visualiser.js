@@ -221,13 +221,13 @@ canvas.width=window.innerWidth-20;
 canvas.height=window.innerHeight-80;
 const visualiser=new Visualiser({
   canvas,
-  xScaleRange:60,
+  xScaleRange:300,
   yScaleRange:20,
   axisColor:'rgba(0,0,0,0.9)',
   gridColor:'rgba(0,0,0,0.4',
   scaleColor:'white',
   remainingColor:'white',
-  intensityColor:'orange',
+  intensityColor:'rgba(255,165,0,1)',
   nextIntensityColor:'rgba(255,165,0,0.6)',
   padding:[30,150,50,30],
 },workout);
