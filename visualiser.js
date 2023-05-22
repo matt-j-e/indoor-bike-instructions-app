@@ -146,7 +146,7 @@ class Visualiser{
       const currentStep=this.workout.steps[stepIndex];
       const currentStepEnd=accumulatedStepDuration+currentStep.duration;
       const nextStep=this.workout.steps[stepIndex+1];
-      const nextIntensity=nextStep ? nextStep.watts : 'n/a';
+      const nextIntensity=nextStep ? nextStep.watts : '-';
       if(currentStepEnd>secs) {
         return {
           totalDuration:currentStep.duration,
@@ -161,7 +161,8 @@ class Visualiser{
     return {
       totalDuration:0,
       remainingDuration:0,
-      intensity:0
+      intensity:0,
+      nextIntensity:'-'
     };
   }
 
@@ -220,7 +221,7 @@ canvas.width=window.innerWidth-20;
 canvas.height=window.innerHeight-80;
 const visualiser=new Visualiser({
   canvas,
-  xScaleRange:300,
+  xScaleRange:60,
   yScaleRange:20,
   axisColor:'rgba(0,0,0,0.9)',
   gridColor:'rgba(0,0,0,0.4',
