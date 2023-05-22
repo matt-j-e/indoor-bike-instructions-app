@@ -145,11 +145,14 @@ class Visualiser{
     while(secs<this.workoutLength()){
       const currentStep=this.workout.steps[stepIndex];
       const currentStepEnd=accumulatedStepDuration+currentStep.duration;
+      const nextStep=this.workout.steps[stepIndex+1];
+      const nextIntensity=nextStep ? nextStep.watts : 'n/a';
       if(currentStepEnd>secs) {
         return {
           totalDuration:currentStep.duration,
           remainingDuration:currentStepEnd-secs,
-          intensity:currentStep.watts
+          intensity:currentStep.watts,
+          nextIntensity:nextIntensity
         }
       }
       accumulatedStepDuration+=currentStep.duration;
@@ -170,6 +173,10 @@ class Visualiser{
     this.drawText(value,canvas.width-130,yPos,this.options.intensityColor,60,'bottom','bold');
   }
 
+  drawNextStepIntensity(value,yPos){
+    this.drawText(value,canvas.width-130,yPos,this.options.nextIntensityColor,40,'bottom','bold');
+  }
+
   draw(x, secs=0){
     this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
     this.drawXAxis();
@@ -182,6 +189,7 @@ class Visualiser{
     const stepData=this.currentStep(secs);
     this.drawCurrentStepRemaining(stepData.remainingDuration, 180);
     this.drawCurrentStepIntensity(stepData.intensity,130);
+    this.drawNextStepIntensity(stepData.nextIntensity,250);
   }
 
   start(){
@@ -219,6 +227,7 @@ const visualiser=new Visualiser({
   scaleColor:'white',
   remainingColor:'white',
   intensityColor:'orange',
+  nextIntensityColor:'rgba(255,165,0,0.6)',
   padding:[30,150,50,30],
 },workout);
 visualiser.draw(0);
