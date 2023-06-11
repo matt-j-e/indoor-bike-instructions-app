@@ -25,11 +25,29 @@
       ">
       Choose your workout
     </label>
-    <select name="workouts" id="workout-select">
+    <select 
+      name="workouts" 
+      id="workout-select"
+      style="
+        padding: 0.5rem;
+        border:none;
+        border-radius:0;
+      "
+    >
       <option value="0">VO2 - 2 sets of (4 x 1 min work interval with 2 min recovery). 5 min between sets.</option>
       <option value="1">Test workout</option>
     </select>
-    <button id="workout-selector-button" style="background-color:orange;">Load chosen workout</button>
+    <button 
+      id="workout-selector-button" 
+      style="
+        background-color:orange;
+        border:none;
+        border-radius:0;
+        cursor:pointer;
+        padding: 0.5rem;
+      ">
+      Load chosen workout
+    </button>
   </main>
   <script>
     const workoutSelect = document.getElementById('workout-select');
