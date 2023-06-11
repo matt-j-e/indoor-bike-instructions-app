@@ -216,19 +216,19 @@ class Visualiser{
   }
 }
 
-const canvas=document.getElementById('visualiser');
-canvas.width=window.innerWidth-20;
-canvas.height=window.innerHeight-80;
-const visualiser=new Visualiser({
-  canvas,
-  xScaleRange:300,
-  yScaleRange:20,
-  axisColor:'rgba(0,0,0,0.9)',
-  gridColor:'rgba(0,0,0,0.4',
-  scaleColor:'white',
-  remainingColor:'white',
-  intensityColor:'rgba(255,165,0,1)',
-  nextIntensityColor:'rgba(255,165,0,0.6)',
-  padding:[30,150,50,30],
-},workout);
-visualiser.draw(0);
+// const canvas=document.getElementById('visualiser');
+// canvas.width=window.innerWidth-20;
+// canvas.height=window.innerHeight-80;
+// const visualiser=new Visualiser({
+//   canvas,
+//   xScaleRange:300,
+//   yScaleRange:20,
+//   axisColor:'rgba(0,0,0,0.9)',
+//   gridColor:'rgba(0,0,0,0.4',
+//   scaleColor:'white',
+//   remainingColor:'white',
+//   intensityColor:'rgba(255,165,0,1)',
+//   nextIntensityColor:'rgba(255,165,0,0.6)',
+//   padding:[30,150,50,30],
+// },workout);
+// visualiser.draw(0);

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Visualisation</title>
+  <script src="workouts.js"></script>
+  <script type="text/javascript" src="visualiser.js"></script>
+</head>
+<body style="background-color:rgba(10,10,10,0.8)">
+  <canvas id="visualiser"></canvas>
+  <button 
+    style="
+      font-size:1.5rem;
+      padding:0.5rem 1rem;
+      border:none;
+      background-color:rgba(255,165,0,0.6);
+      width:100%;
+      cursor:pointer;" 
+    id="startButton">
+    Start
+  </button>
+  <a 
+    style="
+      display:block;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      text-align:center;
+      text-decoration:none;
+      text-transform:uppercase;
+      background-color:white;
+      padding:0.5rem 0;
+      margin-right:10rem;
+      width:100%;
+    " 
+    href="index.html" 
+  >
+    Choose a different workout
+  </a>
+  <script>
+    const qs = window.location.search;
+    const workoutIndex = qs.split('=')[1];
+    const canvas=document.getElementById('visualiser');
+    canvas.width=window.innerWidth-20;
+    canvas.height=window.innerHeight-105;
+    const visualiser=new Visualiser({
+      canvas,
+      xScaleRange:300,
+      yScaleRange:20,
+      axisColor:'rgba(0,0,0,0.9)',
+      gridColor:'rgba(0,0,0,0.4',
+      scaleColor:'white',
+      remainingColor:'white',
+      intensityColor:'rgba(255,165,0,1)',
+      nextIntensityColor:'rgba(255,165,0,0.6)',
+      padding:[30,150,50,30],
+    },workouts[workoutIndex]);
+    visualiser.draw(0);
+  </script>
+  <script>
+    const startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', ()=>{
+      visualiser.start();
+      startButton.style.display='none';
+    });
+  </script>
+</body>
+</html>
