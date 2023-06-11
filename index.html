@@ -17,15 +17,20 @@
   ">
   <main>
     <label for="workout-select">Choose your workout</label>
-    <select name="workouts" id="workout-select">
-      <option value="0">VO2 - 2 sets of (4 x 1 min work interval with 2 min recovery). 5 min between sets.</option>
-      <option value="1">Test workout</option>
-    </select>
+    <select name="workouts" id="workout-select"></select>
     <button id="workout-selector-button">Load chosen workout</button>
   </main>
   <script>
     const workoutSelect = document.getElementById('workout-select');
     const workoutSelectorButton = document.getElementById('workout-selector-button');
+
+    workouts.forEach((workout, i) => {
+      const option = document.createElement('option');
+      option.setAttribute('value', i);
+      option.innerText = workout.description;
+      workoutSelect.appendChild(option);
+    });
+
     workoutSelectorButton.addEventListener('click', (e) => {
       console.log('Selected workout index >>>', workoutSelect.value);
       window.location.href = "visualiser.html?i=" + workoutSelect.value;
